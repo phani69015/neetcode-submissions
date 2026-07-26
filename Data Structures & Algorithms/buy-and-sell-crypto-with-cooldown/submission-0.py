@@ -1,0 +1,22 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+
+        d = {}
+        def dfs(day,holding):
+            if day >= len(prices):
+                return 0
+            if (day,holding) in d:
+                return d[(day,holding)]
+            if holding:
+                sell = prices[day] + dfs(day+2, False)
+                keep = dfs(day+1,True)
+                ans = max(sell,keep)
+            else:
+                buy = -prices[day] + dfs(day+1,True)
+                skip = dfs(day+1,False)
+                ans = max(buy,skip)
+            d[(day,holding)]= ans
+            return ans
+
+        return dfs(0,False)  
+        
